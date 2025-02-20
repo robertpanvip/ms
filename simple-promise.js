@@ -1,4 +1,4 @@
-function MyPromise(executor) {
+function Promise(executor) {
   this.state = 'pending'; // 初始状态为待定
   this.value = undefined; // 存储结果值
   this.reason = undefined; // 存储拒绝原因
@@ -28,7 +28,7 @@ function MyPromise(executor) {
   }
 }
 
-MyPromise.prototype.then = function (onFulfilled, onRejected) {
+Promise.prototype.then = function (onFulfilled, onRejected) {
   if (this.state === 'fulfilled') {
     onFulfilled(this.value);
   } else if (this.state === 'rejected') {
@@ -39,3 +39,10 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
   }
   return this; // 支持链式调用
 };
+Promise.prototype.race=function (promises){
+  return new Promise((resolve,reject)=>{
+    promises.forEach(p=>{
+      Promise.resolve(p).then(resolve,reject)
+    })
+  })
+}
